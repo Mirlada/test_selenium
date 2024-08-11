@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from pyvirtualdisplay import Display  # Установите pyvirtualdisplay через pip
 
@@ -7,11 +8,16 @@ from pyvirtualdisplay import Display  # Установите pyvirtualdisplay ч
 display = Display(visible=0, size=(1024, 768))
 display.start()
 
+options = Options()
+options.set_headless()
+options.set_preference('browser.cache.disk.enable', False)
+options.set_preference('browser.cache.memory.enable', False)
+
 # Укажите путь к вашему geckodriver, если он не в PATH
-service = Service('/usr/local/bin/geckodriver')
+service = Service('/usr/local/bin/geckodriver', log_path='/tmp/geckodriver.log')
 
 # Настроим драйвер Firefox
-driver = webdriver.Firefox(service=service)
+driver = webdriver.Firefox(service=service, options=options)
 
 # Откроем страницу
 driver.get("https://www.google.com")
